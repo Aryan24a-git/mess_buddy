@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mess Buddy - Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#b4ebff",
+                        "on-surface": "#e2e2e8",
+                        "surface-variant": "#333539",
+                        "on-background": "#e2e2e8",
+                        "inverse-surface": "#e2e2e8",
+                        "secondary": "#a2e7ff",
+                        "surface-tint": "#c4c0ff",
+                        "surface": "#111317",
+                        "on-error": "#690005",
+                        "surface-dim": "#111317",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#461f00",
+                        "tertiary-container": "#db761f",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "on-primary-fixed": "#100069",
+                        "on-tertiary": "#502500",
+                        "background": "#111317",
+                        "on-surface-variant": "#c7c4d8",
+                        "tertiary-fixed-dim": "#ffb785",
+                        "surface-container-highest": "#333539",
+                        "on-primary-container": "#1b0091",
+                        "on-secondary": "#003642",
+                        "secondary-container": "#00d2fd",
+                        "inverse-on-surface": "#2f3035",
+                        "tertiary-fixed": "#ffdcc6",
+                        "tertiary": "#ffb785",
+                        "primary-fixed": "#e3dfff",
+                        "secondary-fixed-dim": "#3cd7ff",
+                        "primary": "#c4c0ff",
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#464555",
+                        "primary-container": "#8781ff",
+                        "surface-container": "#1e2024",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-secondary-fixed-variant": "#004e5f",
+                        "on-secondary-fixed": "#001f27",
+                        "on-primary-fixed-variant": "#3622ca",
+                        "on-secondary-container": "#005669",
+                        "outline": "#918fa1",
+                        "inverse-primary": "#4f44e2",
+                        "surface-bright": "#37393e",
+                        "on-primary": "#2000a4",
+                        "surface-container-high": "#282a2e",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-container-low": "#1a1c20",
+                        "primary-fixed-dim": "#c4c0ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1.25rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #111317; font-family: 'Manrope', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(196, 192, 255, 0.1);
+        }
+        .text-glow { text-shadow: 0 0 20px rgba(196, 192, 255, 0.4); }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#111317]/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar smiling young man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMzxz9XIwGYTZVjZb5eD4GSW0Gqpr5VagcYBA_mauHqieM4lLUwAEPVGz8iq3ZE61WY6iBkwl1r6ommOXEnEWqXH66DdVoOdS3PuRzO4int13gtw9VFCjmkxR65B0W5gklk7IxLWTCh6Zwg975q0hKl2vZXUiuzkZ27U0aptPOajiGHIrkkY4lvEJsgox5varwg-oKO7-oNaKL37oodVDTPoupf8f3A72i7Q4GzCh48usksOxj0MbWKbh2BF1Jfu_hG51vQDJG_0Y"/>
+</div>
+<h1 class="text-xl font-bold text-[#C4C0FF] tracking-tight font-headline">Mess Buddy</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[#C4C0FF]">notifications</span>
+</button>
+</header>
+<main class="mt-20 px-6 max-w-5xl mx-auto space-y-8">
+<!-- Hero: Monthly Spending -->
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-on-surface-variant font-label text-sm uppercase tracking-widest">Monthly Spending</span>
+<h2 class="text-4xl font-extrabold font-headline text-[#C4C0FF] text-glow mt-1">₹14,250.00</h2>
+</div>
+<div class="flex items-center gap-2 bg-secondary/10 px-3 py-1 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined text-secondary text-sm">trending_up</span>
+<span class="text-secondary font-bold text-xs">+12.5%</span>
+</div>
+</div>
+<!-- Main Expense Trend Line Graph -->
+<div class="glass-card w-full h-64 rounded-2xl p-6 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent"></div>
+<div class="relative z-10 h-full flex flex-col">
+<div class="flex justify-between mb-4">
+<span class="font-headline font-bold text-lg">Expense Trends</span>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-primary mt-2"></span>
+<span class="text-xs text-on-surface-variant">Current Month</span>
+</div>
+</div>
+<!-- Mock Line Chart via SVG -->
+<div class="flex-1 w-full mt-4">
+<svg class="w-full h-full drop-shadow-lg" viewbox="0 0 400 120">
+<path d="M0,100 Q40,80 80,95 T160,50 T240,70 T320,30 T400,45" fill="none" stroke="url(#lineGradient)" stroke-linecap="round" stroke-width="4"></path>
+<defs>
+<lineargradient id="lineGradient" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#C4C0FF"></stop>
+<stop offset="100%" stop-color="#A2E7FF"></stop>
+</lineargradient>
+</defs>
+<!-- Data Points -->
+<circle cx="160" cy="50" fill="#C4C0FF" r="4"></circle>
+<circle cx="320" cy="30" fill="#A2E7FF" r="4"></circle>
+</svg>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant uppercase font-label mt-2">
+<span>Week 1</span>
+<span>Week 2</span>
+<span>Week 3</span>
+<span>Week 4</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Insights & Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Category Breakdown Pie Chart -->
+<div class="glass-card md:col-span-2 p-6 rounded-2xl">
+<h3 class="font-headline font-bold mb-6">Category Breakdown</h3>
+<div class="flex flex-col md:flex-row items-center gap-8">
+<!-- Donut Chart Mockup -->
+<div class="relative w-40 h-40">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle cx="18" cy="18" fill="none" r="16" stroke="#333539" stroke-width="3"></circle>
+<circle cx="18" cy="18" fill="none" r="16" stroke="#C4C0FF" stroke-dasharray="40 100" stroke-linecap="round" stroke-width="3"></circle>
+<circle cx="18" cy="18" fill="none" r="16" stroke="#A2E7FF" stroke-dasharray="30 100" stroke-dashoffset="-40" stroke-linecap="round" stroke-width="3"></circle>
+<circle cx="18" cy="18" fill="none" r="16" stroke="#FFB785" stroke-dasharray="20 100" stroke-dashoffset="-70" stroke-linecap="round" stroke-width="3"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center flex-col">
+<span class="text-xs text-on-surface-variant">Total</span>
+<span class="text-sm font-bold">100%</span>
+</div>
+</div>
+<!-- Legend -->
+<div class="flex-1 grid grid-cols-2 gap-4 w-full">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-sm bg-primary"></div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-label">Food</p>
+<p class="font-bold text-sm">40%</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-sm bg-secondary"></div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-label">Rent</p>
+<p class="font-bold text-sm">30%</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-sm bg-tertiary"></div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-label">Mess</p>
+<p class="font-bold text-sm">20%</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-sm bg-surface-variant"></div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-label">Other</p>
+<p class="font-bold text-sm">10%</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Burn Rate / Day -->
+<div class="glass-card p-6 rounded-2xl flex flex-col justify-between border-l-4 border-l-secondary">
+<div>
+<span class="material-symbols-outlined text-secondary mb-2">local_fire_department</span>
+<h3 class="font-headline font-bold text-lg">Burn Rate</h3>
+<p class="text-on-surface-variant text-sm mt-1">Average daily expense</p>
+</div>
+<div class="mt-4">
+<span class="text-3xl font-extrabold font-headline">₹475<span class="text-sm font-medium text-on-surface-variant">/day</span></span>
+<div class="w-full h-1 bg-surface-variant rounded-full mt-3 overflow-hidden">
+<div class="bg-secondary h-full w-[65%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Weekly & Heatmap Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Last 7 Days Bar Chart -->
+<div class="glass-card p-6 rounded-2xl">
+<h3 class="font-headline font-bold mb-6">Last 7 Days</h3>
+<div class="flex items-end justify-between h-40 gap-2">
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-variant rounded-t-lg h-[40%] hover:bg-primary/40 transition-all"></div>
+<span class="text-[10px] text-on-surface-variant">M</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-variant rounded-t-lg h-[60%] hover:bg-primary/40 transition-all"></div>
+<span class="text-[10px] text-on-surface-variant">T</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/80 rounded-t-lg h-[95%] shadow-[0_0_15px_rgba(196,192,255,0.3)]"></div>
+<span class="text-[10px] text-on-surface-variant">W</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-variant rounded-t-lg h-[30%] hover:bg-primary/40 transition-all"></div>
+<span class="text-[10px] text-on-surface-variant">T</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-variant rounded-t-lg h-[55%] hover:bg-primary/40 transition-all"></div>
+<span class="text-[10px] text-on-surface-variant">F</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-variant rounded-t-lg h-[80%] hover:bg-primary/40 transition-all"></div>
+<span class="text-[10px] text-on-surface-variant">S</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-variant rounded-t-lg h-[45%] hover:bg-primary/40 transition-all"></div>
+<span class="text-[10px] text-on-surface-variant">S</span>
+</div>
+</div>
+</div>
+<!-- Heatmap calendar -->
+<div class="glass-card p-6 rounded-2xl">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline font-bold">Spending Frequency</h3>
+<span class="text-[10px] text-on-surface-variant uppercase bg-white/5 px-2 py-1 rounded">Past 30 Days</span>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<!-- Simple Heatmap Generation -->
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/40"></div>
+<div class="aspect-square rounded-[4px] bg-primary/20"></div>
+<div class="aspect-square rounded-[4px] bg-primary/80"></div>
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/20"></div>
+<div class="aspect-square rounded-[4px] bg-primary/60"></div>
+<div class="aspect-square rounded-[4px] bg-primary/90"></div>
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/20"></div>
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/40"></div>
+<div class="aspect-square rounded-[4px] bg-primary/100"></div>
+<div class="aspect-square rounded-[4px] bg-primary/30"></div>
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/20"></div>
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/40"></div>
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/60"></div>
+<div class="aspect-square rounded-[4px] bg-primary/20"></div>
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/40"></div>
+<div class="aspect-square rounded-[4px] bg-primary/20"></div>
+<div class="aspect-square rounded-[4px] bg-primary/80"></div>
+<div class="aspect-square rounded-[4px] bg-primary/10"></div>
+<div class="aspect-square rounded-[4px] bg-primary/20"></div>
+<div class="aspect-square rounded-[4px] bg-primary/60"></div>
+</div>
+<div class="flex justify-end items-center gap-2 mt-4 text-[10px] text-on-surface-variant">
+<span>Less</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-[2px] bg-primary/10"></div>
+<div class="w-2 h-2 rounded-[2px] bg-primary/40"></div>
+<div class="w-2 h-2 rounded-[2px] bg-primary/70"></div>
+<div class="w-2 h-2 rounded-[2px] bg-primary/100"></div>
+</div>
+<span>More</span>
+</div>
+</div>
+</div>
+<!-- Insights Summary -->
+<section class="space-y-4">
+<h3 class="font-headline font-bold text-lg">AI Insights</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="glass-card p-4 rounded-xl flex items-center gap-4 border-l-4 border-l-tertiary">
+<div class="w-12 h-12 rounded-full bg-tertiary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">restaurant</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant">Category Focus</p>
+<p class="font-bold">Most spent on: <span class="text-tertiary">Food</span></p>
+</div>
+</div>
+<div class="glass-card p-4 rounded-xl flex items-center gap-4 border-l-4 border-l-primary">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">event_repeat</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant">Time Analysis</p>
+<p class="font-bold">Most expensive week: <span class="text-primary">Week 2</span></p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#111317]/80 backdrop-blur-2xl rounded-t-[20px] shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+<div class="flex flex-col items-center justify-center text-[#C7C4D8] px-3 py-1.5 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium font-label">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#C7C4D8] px-3 py-1.5 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="text-[10px] font-medium font-label">Mess</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#C7C4D8] px-3 py-1.5 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium font-label">Roommates</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-white/10 text-[#C4C0FF] rounded-2xl px-3 py-1.5 backdrop-blur-md border border-white/10 transition-all scale-95 duration-200 ease-out cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-[10px] font-medium font-label">Analytics</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#C7C4D8] px-3 py-1.5 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium font-label">Profile</span>
+</div>
+</nav>
+</body></html>

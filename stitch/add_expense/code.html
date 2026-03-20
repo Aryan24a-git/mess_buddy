@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add Expense - Mess Buddy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-fixed": "#b4ebff",
+              "on-surface": "#e2e2e8",
+              "surface-variant": "#333539",
+              "on-background": "#e2e2e8",
+              "inverse-surface": "#e2e2e8",
+              "secondary": "#a2e7ff",
+              "surface-tint": "#c4c0ff",
+              "surface": "#111317",
+              "on-error": "#690005",
+              "surface-dim": "#111317",
+              "error-container": "#93000a",
+              "error": "#ffb4ab",
+              "on-tertiary-container": "#461f00",
+              "tertiary-container": "#db761f",
+              "on-tertiary-fixed-variant": "#713700",
+              "on-primary-fixed": "#100069",
+              "on-tertiary": "#502500",
+              "background": "#111317",
+              "on-surface-variant": "#c7c4d8",
+              "tertiary-fixed-dim": "#ffb785",
+              "surface-container-highest": "#333539",
+              "on-primary-container": "#1b0091",
+              "on-secondary": "#003642",
+              "secondary-container": "#00d2fd",
+              "inverse-on-surface": "#2f3035",
+              "tertiary-fixed": "#ffdcc6",
+              "tertiary": "#ffb785",
+              "primary-fixed": "#e3dfff",
+              "secondary-fixed-dim": "#3cd7ff",
+              "primary": "#c4c0ff",
+              "on-error-container": "#ffdad6",
+              "outline-variant": "#464555",
+              "primary-container": "#8781ff",
+              "surface-container": "#1e2024",
+              "surface-container-lowest": "#0c0e12",
+              "on-secondary-fixed-variant": "#004e5f",
+              "on-secondary-fixed": "#001f27",
+              "on-primary-fixed-variant": "#3622ca",
+              "on-secondary-container": "#005669",
+              "outline": "#918fa1",
+              "inverse-primary": "#4f44e2",
+              "surface-bright": "#37393e",
+              "on-primary": "#2000a4",
+              "surface-container-high": "#282a2e",
+              "on-tertiary-fixed": "#301400",
+              "surface-container-low": "#1a1c20",
+              "primary-fixed-dim": "#c4c0ff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(196, 192, 255, 0.15);
+        }
+        .ghost-border {
+            border: 1px solid rgba(162, 231, 255, 0.15);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body min-h-screen pb-32">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#111317]/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined text-on-surface">close</span>
+</button>
+<h1 class="text-xl font-bold text-[#C4C0FF] tracking-tight font-headline">Add Expense</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#C4C0FF]">history</span>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Amount Input Section -->
+<section class="flex flex-col items-center justify-center py-8">
+<label class="font-label text-sm font-medium text-on-surface-variant mb-2">Transaction Amount</label>
+<div class="relative flex items-baseline">
+<span class="text-4xl font-headline font-bold text-primary mr-2">₹</span>
+<input autofocus="" class="bg-transparent border-none text-6xl font-headline font-extrabold text-on-surface focus:ring-0 w-full text-center placeholder:opacity-20 selection:bg-primary-container" placeholder="0.00" type="text"/>
+</div>
+<div class="mt-4 px-4 py-1.5 rounded-full bg-surface-container-low text-secondary font-label text-xs font-bold tracking-wider uppercase ghost-border">
+                Personal Ledger
+            </div>
+</section>
+<!-- Category Selector (Horizontal Scroll) -->
+<section class="space-y-4">
+<h2 class="font-headline font-bold text-lg text-on-surface">Category</h2>
+<div class="flex overflow-x-auto gap-3 no-scrollbar pb-2">
+<button class="flex-shrink-0 px-6 py-3 rounded-2xl glass-panel text-primary border-primary/40 flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="font-label text-xs font-bold">Food</span>
+</button>
+<button class="flex-shrink-0 px-6 py-3 rounded-2xl bg-surface-container-low text-on-surface-variant hover:bg-white/5 transition-colors flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label text-xs font-medium">Rent</span>
+</button>
+<button class="flex-shrink-0 px-6 py-3 rounded-2xl bg-surface-container-low text-on-surface-variant hover:bg-white/5 transition-colors flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">local_dining</span>
+<span class="font-label text-xs font-medium">Mess</span>
+</button>
+<button class="flex-shrink-0 px-6 py-3 rounded-2xl bg-surface-container-low text-on-surface-variant hover:bg-white/5 transition-colors flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">directions_bus</span>
+<span class="font-label text-xs font-medium">Transport</span>
+</button>
+<button class="flex-shrink-0 px-6 py-3 rounded-2xl bg-surface-container-low text-on-surface-variant hover:bg-white/5 transition-colors flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-label text-xs font-medium">Shopping</span>
+</button>
+</div>
+</section>
+<!-- Quick Add Grid -->
+<section class="space-y-4">
+<h2 class="font-headline font-bold text-lg text-on-surface">Quick Add</h2>
+<div class="grid grid-cols-2 gap-4">
+<button class="glass-panel p-4 rounded-xl flex items-center gap-4 active:scale-95 transition-transform">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">coffee</span>
+</div>
+<div class="text-left">
+<p class="font-label text-sm font-bold text-on-surface">Coffee</p>
+<p class="font-label text-[10px] text-on-surface-variant">Last: ₹45.00</p>
+</div>
+</button>
+<button class="glass-panel p-4 rounded-xl flex items-center gap-4 active:scale-95 transition-transform">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">icecream</span>
+</div>
+<div class="text-left">
+<p class="font-label text-sm font-bold text-on-surface">Snacks</p>
+<p class="font-label text-[10px] text-on-surface-variant">Last: ₹120.00</p>
+</div>
+</button>
+<button class="glass-panel p-4 rounded-xl flex items-center gap-4 active:scale-95 transition-transform">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">print</span>
+</div>
+<div class="text-left">
+<p class="font-label text-sm font-bold text-on-surface">Prints</p>
+<p class="font-label text-[10px] text-on-surface-variant">Last: ₹15.00</p>
+</div>
+</button>
+<button class="glass-panel p-4 rounded-xl flex items-center gap-4 active:scale-95 transition-transform">
+<div class="w-10 h-10 rounded-lg bg-surface-variant/40 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">more_horiz</span>
+</div>
+<div class="text-left">
+<p class="font-label text-sm font-bold text-on-surface">Other</p>
+<p class="font-label text-[10px] text-on-surface-variant">Recent items</p>
+</div>
+</button>
+</div>
+</section>
+<!-- Form Details -->
+<section class="space-y-6">
+<!-- Note Field -->
+<div class="space-y-2">
+<label class="font-label text-sm font-medium text-on-surface-variant ml-1">Note</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">edit_note</span>
+<input class="w-full bg-surface-container-high border-none rounded-2xl py-4 pl-12 pr-4 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-secondary/30 transition-all font-label" placeholder="What was this for?" type="text"/>
+</div>
+</div>
+<!-- Date & Toggles Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Date Selector -->
+<div class="space-y-2">
+<label class="font-label text-sm font-medium text-on-surface-variant ml-1">Date</label>
+<button class="w-full bg-surface-container-high p-4 rounded-2xl flex items-center justify-between group active:scale-[0.98] transition-transform">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">calendar_today</span>
+<span class="font-label text-on-surface font-medium">Today, Oct 24</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</button>
+</div>
+<!-- Toggles -->
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 glass-panel rounded-2xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">sync</span>
+<span class="font-label text-sm text-on-surface font-medium">Recurring</span>
+</div>
+<button class="w-12 h-6 bg-surface-variant rounded-full relative transition-colors p-1">
+<div class="w-4 h-4 bg-on-surface-variant rounded-full shadow-sm"></div>
+</button>
+</div>
+<div class="flex items-center justify-between p-4 glass-panel rounded-2xl bg-secondary/5 border-secondary/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label text-sm text-on-surface font-bold">Split with Roommates</span>
+</div>
+<button class="w-12 h-6 bg-secondary rounded-full relative transition-colors p-1">
+<div class="w-4 h-4 bg-on-secondary rounded-full shadow-sm translate-x-6"></div>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Roommate Split Preview (Contextual Component) -->
+<section class="glass-panel p-6 rounded-[20px] bg-secondary/5">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label text-sm font-bold text-on-surface">Splitting with Room 302</h3>
+<span class="text-xs font-bold text-secondary">Split Equally</span>
+</div>
+<div class="flex -space-x-3 items-center">
+<img class="w-10 h-10 rounded-full border-2 border-surface object-cover" data-alt="User avatar male" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA35XB4s83FAi0sI9JoPZfimWufKXwhQ75t1u_OsfUHOlMp8Go_edsM4he-iQMufMEA6fK_0_Idc1BcqEo2qo_Ww_PWgMGdDhDF0Y2WmViu00l3iwG2mBZTdoECPIqSLDMH73rVWi-tHBLBdJLwM3i70umoYlq7Fiu0SiRC8jzilfuGnV_0Sr_3OBYyxJpAbkXDjJsIfvvBRZJOXnjGov9707trd3XCZtQ_qnt0HBPKNBLaOA3kiPkI9Diu6_x2_Tl_Gkvrzrlq8IQ"/>
+<img class="w-10 h-10 rounded-full border-2 border-surface object-cover" data-alt="User avatar female" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDengn6vdaz6AH6xUcNbicgVyo3ttLjAYe4NS3fo_2nq1Uuq7ZkJsyD36EbwVNL2J2YhOu-8yi1CCWlMcnAkLk6eFLfMMm_Xnw2AHi72jSrZ9o7O1Tsd3pOI9jngTnW2NoHdv-CDxfaxn3se23VOHLYYHWw_Yy1bquOWYRKRxp7Iup4Ps3Gu_RA8x4PkY3v1Ym8S8JPFTEhbi9CsXA96Mlnf8pp4rG1n56V_UnjqS3ZNZq8BZpPeVA5RlGMiYhcj-pHICtk18F2QKE"/>
+<img class="w-10 h-10 rounded-full border-2 border-surface object-cover" data-alt="User avatar male casual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCunJ3XEOZ8WF_qwkUa6OBNoqdeC4BDpIpuUi7EKNg-wIP_tiepA2IYURCf2Brqour7j_Ar4tOMf1KOUbJX8vB8eZmQOqI8VpTrocL36q-qnl0Z1aDpqVHqtpYb0fymmnTnXkkyHStXE09FC-wUbJM3vnO6tcUMns5ZPTuEiH6_J61HN0dCEyrOXHkjFaFdqtoaS4gJQlFu4TAySQx8NcT-ypwjW6L5DE7d0jDxJN9HJnjLeoueOdT413_uXV8GXbWS3cNWfmZRBKs"/>
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-surface-variant flex items-center justify-center text-[10px] font-bold text-on-surface-variant">+1</div>
+<div class="ml-6 flex-1 text-right">
+<p class="text-xs text-on-surface-variant">Each pays</p>
+<p class="text-lg font-headline font-bold text-secondary">₹0.00</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Action Area -->
+<footer class="fixed bottom-0 left-0 w-full z-50 px-6 pb-8 pt-4 bg-[#111317]/80 backdrop-blur-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+<button class="w-full py-5 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-headline font-extrabold text-lg shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3">
+<span class="material-symbols-outlined">add_circle</span>
+            Add Expense
+        </button>
+</footer>
+</body></html>

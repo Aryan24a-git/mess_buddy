@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mess Buddy - Mess Mode</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#b4ebff",
+                        "on-surface": "#e2e2e8",
+                        "surface-variant": "#333539",
+                        "on-background": "#e2e2e8",
+                        "inverse-surface": "#e2e2e8",
+                        "secondary": "#a2e7ff",
+                        "surface-tint": "#c4c0ff",
+                        "surface": "#111317",
+                        "on-error": "#690005",
+                        "surface-dim": "#111317",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#461f00",
+                        "tertiary-container": "#db761f",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "on-primary-fixed": "#100069",
+                        "on-tertiary": "#502500",
+                        "background": "#111317",
+                        "on-surface-variant": "#c7c4d8",
+                        "tertiary-fixed-dim": "#ffb785",
+                        "surface-container-highest": "#333539",
+                        "on-primary-container": "#1b0091",
+                        "on-secondary": "#003642",
+                        "secondary-container": "#00d2fd",
+                        "inverse-on-surface": "#2f3035",
+                        "tertiary-fixed": "#ffdcc6",
+                        "tertiary": "#ffb785",
+                        "primary-fixed": "#e3dfff",
+                        "secondary-fixed-dim": "#3cd7ff",
+                        "primary": "#c4c0ff",
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#464555",
+                        "primary-container": "#8781ff",
+                        "surface-container": "#1e2024",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-secondary-fixed-variant": "#004e5f",
+                        "on-secondary-fixed": "#001f27",
+                        "on-primary-fixed-variant": "#3622ca",
+                        "on-secondary-container": "#005669",
+                        "outline": "#918fa1",
+                        "inverse-primary": "#4f44e2",
+                        "surface-bright": "#37393e",
+                        "on-primary": "#2000a4",
+                        "surface-container-high": "#282a2e",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-container-low": "#1a1c20",
+                        "primary-fixed-dim": "#c4c0ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(196, 192, 255, 0.15);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #111317;
+            color: #e2e2e8;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#111317]/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center overflow-hidden border border-white/10">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="User avatar with a modern illustrated style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt4XSPBwg5u2e7dXBo1XhrEcyjbuuWWu6qf_5t0H9mMN-HYbinAZOE9kYJ6KMzE0vIJxdN14K3m5hwQdauhGAf2pTdBCierUA1YS44htrkw5bn4QafenExAnZCWHIfeqqiGe8bkTde_N8rKbVPCjd5u6XnV9Ss69aVgJ-T7ZKZnNzSel7KD_PCLQEx2rws5-AWR6XG0x_hY3eLfnmOerUSv4Y3pW7rSAmgIE4_lptk_44gJZJUkdXIO8YJMlimxnEBttb7sOVx5z8"/>
+</div>
+<h1 class="text-xl font-bold text-[#C4C0FF] tracking-tight font-headline">Mess Buddy</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/5 transition-colors group">
+<span class="material-symbols-outlined text-[#C4C0FF] group-active:scale-95 duration-100">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Attendance Toggle Section -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline font-bold text-lg text-on-surface">Daily Attendance</h2>
+<span class="text-label text-xs font-medium text-on-surface-variant uppercase tracking-widest">Live Status</span>
+</div>
+<div class="glass-card p-2 rounded-3xl flex items-center relative overflow-hidden">
+<!-- Present Tab -->
+<button class="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl z-10 text-primary font-bold transition-all duration-300">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label">Present</span>
+</button>
+<!-- Absent Tab (Inactive state visually shown through absence of high-contrast) -->
+<button class="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl z-10 text-on-surface-variant font-medium hover:text-on-surface transition-all">
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+<span class="font-label">Absent</span>
+</button>
+<!-- Indicator background -->
+<div class="absolute left-2 top-2 bottom-2 w-[calc(50%-8px)] bg-primary/10 border border-primary/20 rounded-2xl shadow-lg transition-transform duration-300"></div>
+</div>
+</section>
+<!-- Daily Meal Card -->
+<section class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-[28px] blur-xl opacity-50 group-hover:opacity-100 transition duration-500"></div>
+<div class="glass-card relative p-6 rounded-[24px] space-y-6 overflow-hidden">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-surface-variant text-sm font-medium mb-1">Current Session</p>
+<h3 class="font-headline text-3xl font-extrabold text-on-surface">Dinner</h3>
+</div>
+<div class="text-right">
+<p class="text-primary text-3xl font-black font-headline tracking-tighter">₹80</p>
+<p class="text-on-surface-variant text-xs font-medium">Standard Rate</p>
+</div>
+</div>
+<!-- Extras Grid -->
+<div class="space-y-4">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Add-ons (Extras)</p>
+<div class="grid grid-cols-3 gap-3">
+<button class="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/40 hover:bg-primary/5 transition-all active:scale-95">
+<span class="material-symbols-outlined text-tertiary">egg</span>
+<span class="text-[10px] font-bold text-on-surface">Egg (₹10)</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/40 hover:bg-primary/5 transition-all active:scale-95">
+<span class="material-symbols-outlined text-tertiary">restaurant</span>
+<span class="text-[10px] font-bold text-on-surface">Chicken (₹60)</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/40 hover:bg-primary/5 transition-all active:scale-95">
+<span class="material-symbols-outlined text-tertiary">water_drop</span>
+<span class="text-[10px] font-bold text-on-surface">Milk (₹20)</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Monthly Summary Bento -->
+<section class="grid grid-cols-2 gap-4">
+<div class="col-span-2 glass-card p-6 rounded-[24px] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -mr-16 -mt-16"></div>
+<p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest mb-4">Monthly Overview</p>
+<div class="flex items-end justify-between">
+<div>
+<h4 class="text-primary text-4xl font-black font-headline tracking-tighter">₹1,850</h4>
+<p class="text-on-surface-variant text-sm font-medium">Total Mess Expenditure</p>
+</div>
+<div class="text-right">
+<div class="flex items-center justify-end text-secondary gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span class="text-sm font-bold">12%</span>
+</div>
+<p class="text-[10px] text-on-surface-variant uppercase font-medium">vs Last Month</p>
+</div>
+</div>
+<div class="mt-6 flex items-center gap-8 border-t border-white/5 pt-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xl">calendar_today</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">22 Days</p>
+<p class="text-[10px] text-on-surface-variant font-medium">Mess Count</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-xl">payments</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">₹84/meal</p>
+<p class="text-[10px] text-on-surface-variant font-medium">Average Cost</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Comparison Chart Card -->
+<section class="glass-card p-6 rounded-[24px]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline font-bold text-on-surface">Mess vs Outside</h3>
+<div class="bg-primary/20 text-primary text-[10px] px-2 py-1 rounded-full font-bold">SAVING ₹450/mo</div>
+</div>
+<div class="space-y-6">
+<!-- Bar Outside -->
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-medium">
+<span class="text-on-surface-variant">Eating Outside (Est.)</span>
+<span class="text-on-surface">₹2,300</span>
+</div>
+<div class="h-3 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-on-surface-variant/30 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Bar Mess -->
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-medium">
+<span class="text-primary font-bold">Current Mess Cost</span>
+<span class="text-primary font-bold">₹1,850</span>
+</div>
+<div class="h-3 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<p class="mt-6 text-[10px] text-center text-on-surface-variant leading-relaxed">
+                You are currently spending <span class="text-secondary">24% less</span> by utilizing the mess facilities consistently.
+            </p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#111317]/80 backdrop-blur-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.4)] rounded-t-[20px]">
+<button class="flex flex-col items-center justify-center text-[#C7C4D8] px-3 py-1.5 hover:text-white transition-all">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label text-[10px] font-medium mt-1">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-white/10 text-[#C4C0FF] rounded-2xl px-3 py-1.5 backdrop-blur-md border border-white/10 scale-90 duration-200 ease-out">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<span class="font-label text-[10px] font-bold mt-1">Mess</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#C7C4D8] px-3 py-1.5 hover:text-white transition-all">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label text-[10px] font-medium mt-1">Roommates</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#C7C4D8] px-3 py-1.5 hover:text-white transition-all">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label text-[10px] font-medium mt-1">Analytics</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#C7C4D8] px-3 py-1.5 hover:text-white transition-all">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label text-[10px] font-medium mt-1">Profile</span>
+</button>
+</nav>
+</body></html>
