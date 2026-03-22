@@ -17,14 +17,8 @@ Mess Buddy is a high-performance, offline-first expense tracking and management 
 *   **Routing:** GoRouter
 *   **Others:** `google_mobile_ads`, `flutter_local_notifications`, `pdf`, `printing` 
 
-## 📦 How to Build
-To generate an optimized, obfuscated APK for Android deployment:
-```bash
-flutter build apk --obfuscate --split-debug-info=./debug_info
-```
 
-## 📱 Screenshots & Demo
-> *(Add your screenshots here via assets folder)*
+
 
 ---
-Designed & built autonomously alongside **Antigravity**.
+Designed & built by **ARYAN**.
