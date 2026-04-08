@@ -1,15 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import '../../domain/models/roommate.dart';
 import '../../domain/repositories/roommate_repository.dart';
-import '../../data/repositories/mock_roommate_repository.dart';
 import '../../data/repositories/sqlite_roommate_repository.dart';
 
-// 1. Provide the Repository implementation (Mock for Web, SQLite for Mobile/Desktop)
+// 1. Provide the Repository implementation (SQLite for Mobile/Desktop)
 final roommateRepositoryProvider = Provider<RoommateRepository>((ref) {
-  if (kIsWeb) {
-    return MockRoommateRepository();
-  }
   return SqliteRoommateRepository();
 });
 
@@ -31,15 +26,16 @@ class RoommatesNotifier extends StateNotifier<AsyncValue<List<Roommate>>> {
     }
   }
 
-  Future<void> addRoommate(String name, String phone) async {
+  Future<Roommate> addRoommate(String name, String phone) async {
     try {
       final newRoommate = Roommate(
         name: name,
         phone: phone,
         createdAt: DateTime.now(),
       );
-      await _repository.addRoommate(newRoommate);
+      final addedItem = await _repository.addRoommate(newRoommate);
       await loadRoommates(); // Refresh list after adding
+      return addedItem;
     } catch (e) {
       rethrow;
     }

@@ -2,13 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart';
 import '../../domain/models/alert.dart';
 import '../../domain/repositories/alert_repository.dart';
-import '../../data/repositories/mock_alert_repository.dart';
 import '../../data/repositories/sqlite_alert_repository.dart';
 import '../../domain/services/notification_service.dart';
 
 // Provide the repository
 final alertRepositoryProvider = Provider<AlertRepository>((ref) {
-  if (kIsWeb) return MockAlertRepository();
   return SqliteAlertRepository();
 });
 
@@ -32,6 +30,17 @@ class AlertsNotifier extends StateNotifier<AsyncValue<List<AppAlert>>> {
       state = AsyncValue.data(alerts);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> markAllAsRead() async {
+    try {
+      await repository.markAllAsRead();
+      if (state.hasValue) {
+          state = AsyncValue.data(state.value!.map((a) => a.copyWith(isRead: true)).toList());
+      }
+    } catch (e) {
+      if (kDebugMode) print('Error marking as read: $e');
     }
   }
 
@@ -71,21 +80,51 @@ class AlertsNotifier extends StateNotifier<AsyncValue<List<AppAlert>>> {
     await _insertAndNotify(alert, 2);
   }
 
+  /// Triggers a daily budget limit alert (50% info, 80% warning or exceeded).
+  Future<void> triggerDailyBudgetAlert(double spent, double limit) async {
+    if (limit <= 0) return;
+    double ratio = spent / limit;
+    String type;
+    String title;
+    String message;
+    
+    if (ratio >= 0.8) {
+      type = 'daily_limit_warning';
+      title = '80% Daily Budget Used';
+      message = 'You have used 80% of your budget for today.';
+    } else {
+      return;
+    }
+
+    // Check if we already sent this specific level alert today
+    final hasFiredToday = await repository.hasAlertBeenSentToday(type);
+    if (hasFiredToday) return;
+
+    final alert = AppAlert(
+      title: title,
+      message: message,
+      createdAt: DateTime.now(),
+      type: type,
+    );
+
+    await _insertAndNotify(alert, type == 'daily_limit_exceeded' ? 101 : 102);
+  }
+
   Future<void> _insertAndNotify(AppAlert alert, int notificationId) async {
     try {
       // 1. Insert into DB so we know it fired today
-      await repository.insertAlert(alert);
+      final saved = await repository.insertAlert(alert);
       
       // 2. Dispatch Local Notification wrapper
       await _notificationService.showNotification(
         id: notificationId,
-        title: alert.title,
-        body: alert.message,
+        title: saved.title,
+        body: saved.message,
       );
 
       // 3. Update the UI state
       if (state.value != null) {
-        state = AsyncValue.data([alert, ...state.value!]);
+        state = AsyncValue.data([saved, ...state.value!]);
       } else {
         await loadAlerts();
       }

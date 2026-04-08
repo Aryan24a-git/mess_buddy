@@ -6,6 +6,9 @@ class Expense {
   final String category;
   final DateTime date;
 
+  final bool isSplit;
+  final String? splitWith;
+
   Expense({
     this.id,
     required this.title,
@@ -13,6 +16,8 @@ class Expense {
     required this.payerId,
     required this.category,
     required this.date,
+    this.isSplit = false,
+    this.splitWith,
   });
 
   Expense copyWith({
@@ -22,6 +27,8 @@ class Expense {
     int? payerId,
     String? category,
     DateTime? date,
+    bool? isSplit,
+    String? splitWith,
   }) {
     return Expense(
       id: id ?? this.id,
@@ -30,6 +37,8 @@ class Expense {
       payerId: payerId ?? this.payerId,
       category: category ?? this.category,
       date: date ?? this.date,
+      isSplit: isSplit ?? this.isSplit,
+      splitWith: splitWith ?? this.splitWith,
     );
   }
 
@@ -41,6 +50,8 @@ class Expense {
       'payer_id': payerId,
       'category': category,
       'date': date.toIso8601String(),
+      'is_split': isSplit ? 1 : 0,
+      'split_with': splitWith,
     };
   }
 
@@ -52,6 +63,8 @@ class Expense {
       payerId: map['payer_id'] ?? 0,
       category: map['category'] ?? '',
       date: DateTime.parse(map['date']),
+      isSplit: (map['is_split'] ?? 0) == 1,
+      splitWith: map['split_with'],
     );
   }
 }

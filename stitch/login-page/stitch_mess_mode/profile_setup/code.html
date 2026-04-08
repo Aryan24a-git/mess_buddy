@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile Setup - Mess Buddy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#2f3035",
+              "on-secondary": "#003642",
+              "on-secondary-fixed": "#001f27",
+              "tertiary-fixed": "#ffdcc6",
+              "error": "#ffb4ab",
+              "on-tertiary-container": "#461f00",
+              "primary": "#c4c0ff",
+              "on-tertiary": "#502500",
+              "secondary-fixed-dim": "#3cd7ff",
+              "on-surface": "#e2e2e8",
+              "inverse-primary": "#4f44e2",
+              "on-error": "#690005",
+              "surface-container-highest": "#333539",
+              "error-container": "#93000a",
+              "on-error-container": "#ffdad6",
+              "tertiary": "#ffb785",
+              "surface-variant": "#333539",
+              "surface-container-low": "#1a1c20",
+              "secondary-fixed": "#b4ebff",
+              "on-secondary-fixed-variant": "#004e5f",
+              "background": "#111317",
+              "primary-fixed": "#e3dfff",
+              "primary-fixed-dim": "#c4c0ff",
+              "primary-container": "#8781ff",
+              "surface-container-high": "#282a2e",
+              "secondary": "#a2e7ff",
+              "tertiary-container": "#db761f",
+              "surface-dim": "#111317",
+              "surface-bright": "#37393e",
+              "on-secondary-container": "#005669",
+              "on-primary-container": "#1b0091",
+              "on-tertiary-fixed-variant": "#713700",
+              "outline": "#918fa1",
+              "on-primary-fixed": "#100069",
+              "surface-tint": "#c4c0ff",
+              "outline-variant": "#464555",
+              "on-tertiary-fixed": "#301400",
+              "on-surface-variant": "#c7c4d8",
+              "on-primary-fixed-variant": "#3622ca",
+              "secondary-container": "#00d2fd",
+              "tertiary-fixed-dim": "#ffb785",
+              "on-background": "#e2e2e8",
+              "surface": "#111317",
+              "inverse-surface": "#e2e2e8",
+              "surface-container-lowest": "#0c0e12",
+              "surface-container": "#1e2024",
+              "on-primary": "#2000a4"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(196, 192, 255, 0.15);
+        }
+        .ghost-border {
+            border: 1px solid rgba(196, 192, 255, 0.15);
+        }
+        .input-focus-glow:focus-within {
+            border-color: rgba(162, 231, 255, 0.3);
+            box-shadow: 0 0 15px rgba(162, 231, 255, 0.1);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30 selection:text-primary min-h-screen">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky backdrop-blur-xl bg-white/5 border-b border-white/10 shadow-2xl shadow-black/40 flex items-center justify-between px-6 h-16 z-50">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 duration-200 hover:opacity-80 transition-opacity text-[#C4C0FF]">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-2xl font-bold bg-gradient-to-r from-[#C4C0FF] to-[#8781FF] bg-clip-text text-transparent font-['Plus_Jakarta_Sans'] tracking-tight">Mess Buddy</h1>
+</div>
+<div class="text-[#C4C0FF] active:scale-95 duration-200 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="max-w-md mx-auto px-6 pt-10 pb-32">
+<!-- Header Section -->
+<section class="mb-10">
+<h2 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface mb-3 leading-tight">
+                Set Up Your Profile
+            </h2>
+<p class="text-on-surface-variant text-lg font-medium leading-relaxed">
+                Tell us a bit about yourself to get started.
+            </p>
+</section>
+<!-- Profile Picture Placeholder -->
+<div class="flex justify-center mb-12">
+<div class="relative group">
+<div class="w-32 h-32 rounded-full glass-card flex items-center justify-center overflow-hidden border-2 border-primary/20">
+<span class="material-symbols-outlined text-5xl text-primary/40">person</span>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary-container text-on-primary-container p-2.5 rounded-full shadow-lg active:scale-90 duration-200">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+</div>
+<!-- Form Section -->
+<form class="space-y-8">
+<!-- Full Name -->
+<div class="space-y-2 group">
+<label class="flex items-center gap-1 text-sm font-semibold font-label text-on-surface-variant ml-1 group-focus-within:text-primary transition-colors" for="full-name">
+                    Full Name <span class="text-tertiary">*</span>
+</label>
+<div class="glass-card rounded-2xl p-1 transition-all duration-300 input-focus-glow">
+<input class="w-full bg-transparent border-none focus:ring-0 text-lg px-4 py-4 text-on-surface placeholder:text-outline-variant font-medium" id="full-name" placeholder="Ex: Alex Johnson" required="" type="text"/>
+</div>
+</div>
+<!-- Room Number -->
+<div class="space-y-2 group">
+<label class="block text-sm font-semibold font-label text-on-surface-variant ml-1 group-focus-within:text-secondary transition-colors" for="room-number">
+                    Room Number <span class="text-[10px] text-outline opacity-70 ml-2 uppercase tracking-widest">(Optional)</span>
+</label>
+<div class="glass-card rounded-2xl p-1 transition-all duration-300 input-focus-glow">
+<input class="w-full bg-transparent border-none focus:ring-0 text-lg px-4 py-4 text-on-surface placeholder:text-outline-variant font-medium" id="room-number" placeholder="Ex: 402-B" type="text"/>
+</div>
+</div>
+<!-- Hostel Name -->
+<div class="space-y-2 group">
+<label class="block text-sm font-semibold font-label text-on-surface-variant ml-1 group-focus-within:text-secondary transition-colors" for="hostel-name">
+                    Hostel Name <span class="text-[10px] text-outline opacity-70 ml-2 uppercase tracking-widest">(Optional)</span>
+</label>
+<div class="glass-card rounded-2xl p-1 transition-all duration-300 input-focus-glow">
+<input class="w-full bg-transparent border-none focus:ring-0 text-lg px-4 py-4 text-on-surface placeholder:text-outline-variant font-medium" id="hostel-name" placeholder="Ex: Silver Oak Residency" type="text"/>
+</div>
+</div>
+<!-- Roommate Name -->
+<div class="space-y-2 group">
+<label class="block text-sm font-semibold font-label text-on-surface-variant ml-1 group-focus-within:text-secondary transition-colors" for="roommate-name">
+                    Roommate Name <span class="text-[10px] text-outline opacity-70 ml-2 uppercase tracking-widest">(Optional)</span>
+</label>
+<div class="glass-card rounded-2xl p-1 transition-all duration-300 input-focus-glow">
+<input class="w-full bg-transparent border-none focus:ring-0 text-lg px-4 py-4 text-on-surface placeholder:text-outline-variant font-medium" id="roommate-name" placeholder="Ex: Sam Wilson" type="text"/>
+</div>
+</div>
+</form>
+<!-- Decorative Ethereal Element -->
+<div class="fixed top-1/2 -right-24 w-64 h-64 bg-primary/10 blur-[100px] -z-10 rounded-full"></div>
+<div class="fixed bottom-0 -left-24 w-64 h-64 bg-secondary/10 blur-[100px] -z-10 rounded-full"></div>
+</main>
+<!-- Fixed Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background via-background/95 to-transparent z-40">
+<div class="max-w-md mx-auto">
+<button class="w-full py-5 rounded-full bg-gradient-to-r from-[#C4C0FF] to-[#8781FF] text-on-primary font-headline font-bold text-lg shadow-2xl shadow-primary/20 hover:opacity-90 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2">
+                Start Using Mess Buddy
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<p class="text-center text-[10px] text-on-surface-variant/60 font-medium mt-4 tracking-widest uppercase">
+                Securely synced with your ledger
+            </p>
+</div>
+</div>
+</body></html>

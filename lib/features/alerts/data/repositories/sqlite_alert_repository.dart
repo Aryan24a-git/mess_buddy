@@ -22,13 +22,7 @@ class SqliteAlertRepository implements AlertRepository {
     map.remove('id');
     final id = await _dbHelper.insert(DatabaseHelper.tableAlerts, map);
     
-    return AppAlert(
-      id: id,
-      title: alert.title,
-      message: alert.message,
-      createdAt: alert.createdAt,
-      type: alert.type,
-    );
+    return alert.copyWith(id: id);
   }
 
   @override
@@ -44,5 +38,15 @@ class SqliteAlertRepository implements AlertRepository {
       limit: 1,
     );
     return rows.isNotEmpty;
+  }
+
+  @override
+  Future<void> markAllAsRead() async {
+    final db = await _dbHelper.database;
+    await db.update(
+      DatabaseHelper.tableAlerts,
+      {'is_read': 1},
+      where: 'is_read = 0',
+    );
   }
 }

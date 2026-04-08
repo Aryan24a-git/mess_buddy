@@ -30,12 +30,35 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 5,
       onCreate: _createDB,
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('ALTER TABLE mess_sessions ADD COLUMN addons TEXT');
+        }
+        if (oldVersion < 3) {
+          await db.execute('ALTER TABLE expenses ADD COLUMN is_split INTEGER DEFAULT 0');
+          await db.execute('ALTER TABLE expenses ADD COLUMN split_with TEXT');
+        }
+        if (oldVersion < 4) {
+          await db.execute('ALTER TABLE alerts ADD COLUMN is_read INTEGER DEFAULT 0');
+        }
+        if (oldVersion < 5) {
+          // Migration for goals table
+          // Since it's a structural change, we recreate or add columns
+          // Here we just add columns for simplicity, or recreate if needed.
+          await db.execute('ALTER TABLE goals ADD COLUMN saving_rate REAL DEFAULT 0');
+          await db.execute('ALTER TABLE goals ADD COLUMN rate_period TEXT DEFAULT "monthly"');
+          await db.execute('ALTER TABLE goals ADD COLUMN created_at TEXT');
+        }
+      },
     );
   }
 
   Future _createDB(Database db, int version) async {
+    // ... rooms, expenses, splits, sessions as before ... (Keeping them unchanged)
+    // ONLY UPDATING GOALS TABLE BELOW
+    
     // ROOMMATES TABLE
     await db.execute('''
       CREATE TABLE roommates (
@@ -55,6 +78,8 @@ class DatabaseHelper {
         payer_id INTEGER NOT NULL,
         category TEXT NOT NULL,
         date TEXT NOT NULL,
+        is_split INTEGER DEFAULT 0,
+        split_with TEXT,
         FOREIGN KEY (payer_id) REFERENCES roommates (id)
       )
     ''');
@@ -79,18 +104,21 @@ class DatabaseHelper {
         session_date TEXT NOT NULL,
         session_type TEXT NOT NULL,
         status TEXT NOT NULL,
-        session_cost REAL NOT NULL
+        session_cost REAL NOT NULL,
+        addons TEXT
       )
     ''');
 
-    // GOALS TABLE
+    // GOALS TABLE (UPDATED)
     await db.execute('''
       CREATE TABLE goals (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         target_amount REAL NOT NULL,
         current_amount REAL NOT NULL,
-        deadline TEXT NOT NULL
+        saving_rate REAL NOT NULL,
+        rate_period TEXT NOT NULL,
+        created_at TEXT NOT NULL
       )
     ''');
 
@@ -101,7 +129,8 @@ class DatabaseHelper {
         title TEXT NOT NULL,
         message TEXT NOT NULL,
         created_at TEXT NOT NULL,
-        type TEXT NOT NULL
+        type TEXT NOT NULL,
+        is_read INTEGER DEFAULT 0
       )
     ''');
   }

@@ -21,7 +21,7 @@ class SqliteGoalRepository implements GoalRepository {
   @override
   Future<List<Goal>> getGoals() async {
     final db = await _dbHelper.database;
-    final rows = await db.query(DatabaseHelper.tableGoals, orderBy: 'deadline ASC');
+    final rows = await db.query(DatabaseHelper.tableGoals, orderBy: 'created_at DESC');
     return rows.map((row) => Goal.fromMap(row)).toList();
   }
 

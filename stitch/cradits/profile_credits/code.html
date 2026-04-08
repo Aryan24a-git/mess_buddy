@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#e2e2e8",
+              "on-error-container": "#ffdad6",
+              "outline": "#918fa1",
+              "surface-bright": "#37393e",
+              "on-primary-fixed-variant": "#3622ca",
+              "surface-dim": "#111317",
+              "secondary-container": "#00d2fd",
+              "on-secondary-fixed-variant": "#004e5f",
+              "surface-tint": "#c4c0ff",
+              "secondary": "#a2e7ff",
+              "on-tertiary-fixed": "#301400",
+              "on-primary": "#2000a4",
+              "on-primary-container": "#1b0091",
+              "surface-container-lowest": "#0c0e12",
+              "on-secondary-fixed": "#001f27",
+              "primary-fixed": "#e3dfff",
+              "on-tertiary-fixed-variant": "#713700",
+              "tertiary-container": "#db761f",
+              "tertiary-fixed-dim": "#ffb785",
+              "on-secondary": "#003642",
+              "error-container": "#93000a",
+              "surface-container-high": "#282a2e",
+              "on-tertiary": "#502500",
+              "on-surface-variant": "#c7c4d8",
+              "on-error": "#690005",
+              "on-background": "#e2e2e8",
+              "background": "#111317",
+              "on-secondary-container": "#005669",
+              "surface-container-low": "#1a1c20",
+              "surface-container": "#1e2024",
+              "surface-variant": "#333539",
+              "surface": "#111317",
+              "error": "#ffb4ab",
+              "outline-variant": "#464555",
+              "on-tertiary-container": "#461f00",
+              "inverse-on-surface": "#2f3035",
+              "tertiary-fixed": "#ffdcc6",
+              "inverse-primary": "#4f44e2",
+              "secondary-fixed": "#b4ebff",
+              "secondary-fixed-dim": "#3cd7ff",
+              "on-primary-fixed": "#100069",
+              "surface-container-highest": "#333539",
+              "primary-container": "#8781ff",
+              "primary-fixed-dim": "#c4c0ff",
+              "primary": "#c4c0ff",
+              "inverse-surface": "#e2e2e8",
+              "tertiary": "#ffb785"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .ghost-border {
+            outline: 1px solid rgba(196, 192, 255, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full shadow-2xl shadow-black/40">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="close up portrait of a young man with a friendly expression and stylish haircut in a modern studio lighting setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjMDIcvJkY70WSYBvdB-XikRtIx1KncpENDCbX8ESkLnQtyuRrUMaUiM3J4GH4LGUtm01PTx7Z1Del6xYJ39dt5lBuwJEYMYXbgnPMOYZbYNNZg82NBDRvv6tONqvD3szEazrbp2w4Q6e63Q1oHirYuM0ZdwHf2Qe51Ht2NQ3P1xBwXiIilR9E0Npg7yN8zDwvyzgskGgJYlm8zqOnL2BoEAuEiHt1Pn64TG_8iMMKhtxlAv-7BFcxCOUCgyGxFdXC8spVUnpk7uk"/>
+</div>
+<span class="text-[#C4C0FF] font-bold tracking-widest uppercase text-sm">Ethereal Ledger</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#C4C0FF] hover:opacity-80 transition-opacity cursor-pointer">workspace_premium</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center text-center space-y-4">
+<div class="relative">
+<div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-primary to-secondary">
+<div class="w-full h-full rounded-full overflow-hidden border-4 border-background">
+<img alt="Aryan" class="w-full h-full object-cover" data-alt="high resolution headshot of a young adult man named Aryan with clean shaven look and thoughtful expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs_xLokxpU1RkxMzy7ni21yuOcpU9p5neVoCvll88sba0lgrl2TeksIAmbDc5ukmDFeNMNvcDjj2p8oZOibdRAR3Pki7svc2GWnBYEIDyh_xQOhmSRQPXMqc3U0ugNTJIvhcwFdoBU3iZS-feeArjkE8ek4boePsT165jNKgYpij3xMT0ckiStl8Q_ODNuxyy2euH2lW1x0dWT3-AuOE_94sI4J5o2O1FXyxyOuxBYgANJpYf23LcV7DJ_nheHodsC7yh7li8I5iY"/>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 bg-primary text-on-primary p-1.5 rounded-full border-2 border-background">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">edit</span>
+</div>
+</div>
+<div class="space-y-1">
+<h1 class="font-headline font-bold text-3xl tracking-tight text-on-surface">Aryan</h1>
+<p class="font-label text-on-surface-variant text-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">apartment</span>
+                    Block A, Skyview Residency
+                </p>
+</div>
+</section>
+<!-- Credit & Pro Glass Card -->
+<section class="relative group">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary/30 to-secondary/30 rounded-[2rem] blur opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+<div class="glass-card ghost-border relative rounded-[2rem] p-8 overflow-hidden">
+<div class="flex justify-between items-start relative z-10">
+<div class="space-y-6">
+<div class="space-y-1">
+<span class="font-label text-on-surface-variant text-xs uppercase tracking-widest">Total Credits</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline font-extrabold text-5xl text-primary tracking-tighter">42</span>
+<span class="font-label text-secondary font-bold text-sm tracking-widest">PRO</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="px-4 py-1.5 bg-white/5 rounded-full border border-white/10">
+<span class="font-label text-xs text-on-surface font-medium">Free Tier</span>
+</div>
+<span class="text-on-surface-variant text-[10px] uppercase font-bold tracking-tighter">Renews in 12 days</span>
+</div>
+</div>
+<div class="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">token</span>
+</div>
+</div>
+<!-- Background decorative element -->
+<div class="absolute -bottom-10 -right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
+</div>
+</section>
+<!-- Earn Credits Section -->
+<section class="space-y-4">
+<h2 class="font-headline font-bold text-xl px-2">Earn Credits</h2>
+<button class="w-full glass-card ghost-border p-6 rounded-2xl flex items-center justify-between group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-5">
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">volunteer_activism</span>
+</div>
+<div class="text-left">
+<p class="font-headline font-semibold text-lg">Invite Roomies</p>
+<p class="font-body text-sm text-on-surface-variant">Get 10 credits for every referral</p>
+</div>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</button>
+</section>
+<!-- Profile Options List -->
+<section class="space-y-4">
+<h2 class="font-headline font-bold text-xl px-2">Preferences</h2>
+<div class="space-y-3">
+<!-- Option: Monthly Budget -->
+<div class="flex items-center justify-between p-5 rounded-2xl bg-surface-container-low transition-colors hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">payments</span>
+</div>
+<span class="font-body font-medium">Monthly Budget</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">₹12,000</span>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+<!-- Option: Currency -->
+<div class="flex items-center justify-between p-5 rounded-2xl bg-surface-container-low transition-colors hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">currency_rupee</span>
+</div>
+<span class="font-body font-medium">Currency</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant">INR (₹)</span>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+<!-- Option: Export Data -->
+<div class="flex items-center justify-between p-5 rounded-2xl bg-surface-container-low transition-colors hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">ios_share</span>
+</div>
+<span class="font-body font-medium">Export Data</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<!-- Logout -->
+<div class="flex items-center justify-between p-5 rounded-2xl bg-error-container/10 border border-error/10 mt-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-xl">logout</span>
+</div>
+<span class="font-body font-medium text-error">Logout</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#111317]/80 backdrop-blur-2xl rounded-t-[2rem] border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-[#C7C4D8]/60 hover:text-[#A2E7FF] transition-colors active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope medium text-[10px] uppercase tracking-tighter mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#C7C4D8]/60 hover:text-[#A2E7FF] transition-colors active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="font-manrope medium text-[10px] uppercase tracking-tighter mt-1">Mess</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#C7C4D8]/60 hover:text-[#A2E7FF] transition-colors active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined text-3xl">add_circle</span>
+<span class="font-manrope medium text-[10px] uppercase tracking-tighter mt-1">Add</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#C7C4D8]/60 hover:text-[#A2E7FF] transition-colors active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">group</span>
+<span class="font-manrope medium text-[10px] uppercase tracking-tighter mt-1">Roomies</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#C4C0FF] bg-white/5 rounded-xl px-3 py-1 active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-manrope medium text-[10px] uppercase tracking-tighter mt-1">Stats</span>
+</div>
+</nav>
+</body></html>

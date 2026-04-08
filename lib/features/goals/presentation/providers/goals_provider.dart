@@ -1,15 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import '../../domain/models/goal.dart';
 import '../../domain/repositories/goal_repository.dart';
-import '../../data/repositories/mock_goal_repository.dart';
 import '../../data/repositories/sqlite_goal_repository.dart';
 
 // Provider for the GoalRepository
 final goalRepositoryProvider = Provider<GoalRepository>((ref) {
-  if (kIsWeb) {
-    return MockGoalRepository();
-  }
   return SqliteGoalRepository();
 });
 
@@ -52,6 +47,23 @@ class GoalsNotifier extends StateNotifier<AsyncValue<List<Goal>>> {
     
     try {
       await repository.updateGoal(updatedGoal);
+      await loadGoals();
+    } catch (e) {
+      rethrow;
+    }
+  }
+  Future<void> updateGoal(Goal goal) async {
+    try {
+      await repository.updateGoal(goal);
+      await loadGoals();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteGoal(int id) async {
+    try {
+      await repository.deleteGoal(id);
       await loadGoals();
     } catch (e) {
       rethrow;

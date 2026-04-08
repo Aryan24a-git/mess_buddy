@@ -9,6 +9,7 @@ class AppDimensions {
   static const double r1 = 8.0;
   static const double r2 = 16.0;
   static const double r3 = 20.0;
+  static const double r4 = 28.0;
   static const double rMax = 100.0;
 
   // Paddings and Margins

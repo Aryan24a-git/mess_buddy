@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/monetization/services/unity_ads_service.dart';
+import '../../features/monetization/presentation/providers/earnings_provider.dart';
 import '../theme/colors.dart';
 
-class MainLayout extends StatelessWidget {
+class MainLayout extends ConsumerWidget {
   final Widget child;
 
   const MainLayout({super.key, required this.child});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: child,
       bottomNavigationBar: Container(
@@ -19,42 +22,59 @@ class MainLayout extends StatelessWidget {
         ),
         child: BottomNavigationBar(
           currentIndex: _calculateSelectedIndex(context),
-          onTap: (index) => _onItemTapped(index, context),
+          onTap: (index) => _onItemTapped(index, context, ref),
           backgroundColor: AppColors.background,
           selectedItemColor: AppColors.primary,
           unselectedItemColor: AppColors.textMuted,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.dashboard_outlined), label: 'Dashboard'),
-            BottomNavigationBarItem(icon: Icon(Icons.restaurant_outlined), label: 'Mess'),
-            BottomNavigationBarItem(icon: Icon(Icons.group_outlined), label: 'Roommates'),
-            BottomNavigationBarItem(icon: Icon(Icons.bar_chart_outlined), label: 'Analytics'),
-            BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          items: [
+            const BottomNavigationBarItem(icon: Icon(Icons.dashboard_outlined), activeIcon: Icon(Icons.dashboard), label: 'Dashboard'),
+            const BottomNavigationBarItem(icon: Icon(Icons.restaurant_outlined), activeIcon: Icon(Icons.restaurant), label: 'Mess'),
+            BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: GoRouterState.of(context).uri.toString().startsWith('/add_expense') 
+                      ? AppColors.primary 
+                      : AppColors.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.add, 
+                  color: GoRouterState.of(context).uri.toString().startsWith('/add_expense') 
+                      ? Colors.white 
+                      : AppColors.primary, 
+                  size: 28
+                ),
+              ),
+              label: '',
+            ),
+            const BottomNavigationBarItem(icon: Icon(Icons.group_outlined), activeIcon: Icon(Icons.group), label: 'Roommates'),
+            const BottomNavigationBarItem(icon: Icon(Icons.person_outline), activeIcon: Icon(Icons.person), label: 'Profile'),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push('/add_expense');
-        },
-        backgroundColor: AppColors.accent.withValues(alpha: 0.5),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
     if (location.startsWith('/mess')) return 1;
-    if (location.startsWith('/roommates')) return 2;
-    if (location.startsWith('/analytics')) return 3;
+    // index 2 is our center button
+    if (location.startsWith('/roommates')) return 3;
     if (location.startsWith('/profile')) return 4;
     return 0;
   }
 
-  void _onItemTapped(int index, BuildContext context) {
+  void _onItemTapped(int index, BuildContext context, WidgetRef ref) {
+    if (index == 2) {
+      context.push('/add_expense');
+      return;
+    }
+    
     switch (index) {
       case 0:
         GoRouter.of(context).go('/');
@@ -62,11 +82,13 @@ class MainLayout extends StatelessWidget {
       case 1:
         GoRouter.of(context).go('/mess');
         break;
-      case 2:
-        GoRouter.of(context).go('/roommates');
-        break;
       case 3:
-        GoRouter.of(context).go('/analytics');
+        // Trigger ad for non-pro users move to roommates
+        final isPremium = ref.read(premiumStatusProvider).value?.isPremium ?? false;
+        if (!isPremium) {
+          UnityAdsService().showInterstitialAd();
+        }
+        GoRouter.of(context).go('/roommates');
         break;
       case 4:
         GoRouter.of(context).go('/profile');

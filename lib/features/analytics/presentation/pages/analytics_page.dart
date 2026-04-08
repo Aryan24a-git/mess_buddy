@@ -4,7 +4,7 @@ import '../../../../core/theme/dimensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/analytics_provider.dart';
 import '../../../../features/monetization/presentation/providers/monetization_provider.dart';
-import '../../../../features/monetization/services/ad_service.dart';
+import '../../../../features/monetization/services/unity_ads_service.dart';
 import 'dart:math' as math;
 
 class AnalyticsPage extends ConsumerStatefulWidget {
@@ -15,6 +15,18 @@ class AnalyticsPage extends ConsumerStatefulWidget {
 }
 
 class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
+  final List<Color> chartColors = [
+    AppColors.accent,
+    Colors.lightBlueAccent,
+    Colors.orangeAccent,
+    Colors.pinkAccent,
+    Colors.greenAccent,
+    Colors.purpleAccent,
+    Colors.redAccent,
+    Colors.amberAccent,
+    Colors.cyanAccent,
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -22,7 +34,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final isPro = ref.read(monetizationProvider).isPro;
       if (!isPro) {
-        AdService().showInterstitialAd();
+        UnityAdsService().showInterstitialAd();
       }
     });
   }
@@ -46,15 +58,13 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
                 const SizedBox(height: AppDimensions.s4),
                 _buildMonthlySpending(data),
                 const SizedBox(height: AppDimensions.s4),
-                _buildExpenseTrendsCard(),
-                const SizedBox(height: AppDimensions.s3),
                 _buildCategoryBreakdownCard(data),
                 const SizedBox(height: AppDimensions.s3),
                 _buildBurnRateCard(data.burnRate),
                 const SizedBox(height: AppDimensions.s3),
-                _buildLast7DaysCard(),
+                _buildLast7DaysCard(data),
                 const SizedBox(height: AppDimensions.s3),
-                _buildSpendingFrequencyCard(),
+                _buildSpendingFrequencyCard(data),
                 const SizedBox(height: AppDimensions.s4),
                 const Text(
                   'AI Insights',
@@ -80,6 +90,14 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
                   highlightValue: data.mostExpensiveWeek,
                   color: AppColors.accent,
                 ),
+                const SizedBox(height: AppDimensions.s2),
+                _buildInsightCard(
+                  icon: Icons.pie_chart,
+                  title: 'Mess vs Outside',
+                  highlightText: 'Mess: ',
+                  highlightValue: '₹${data.messSpending.toStringAsFixed(0)} | Outside: ₹${data.outsideSpending.toStringAsFixed(0)}',
+                  color: Colors.greenAccent,
+                ),
                 const SizedBox(height: AppDimensions.pHuge * 2),
               ],
             ),
@@ -95,12 +113,12 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
       children: [
         Row(
           children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: AppColors.primary.withValues(alpha: 0.2),
-              child: const Icon(Icons.person, color: AppColors.primary),
+            Image.asset(
+              'assets/images/logo.png',
+              height: 40,
+              width: 40,
             ),
-            const SizedBox(width: AppDimensions.s2),
+            const SizedBox(width: AppDimensions.s1),
             const Text(
               'Mess Buddy',
               style: TextStyle(
@@ -111,10 +129,6 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
               ),
             ),
           ],
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
         ),
       ],
     );
@@ -144,101 +158,92 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary, // With a slight purple glow in the design
+                color: AppColors.textPrimary,
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.surface, // Or deep green background
-                borderRadius: BorderRadius.circular(AppDimensions.rMax),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-              ),
-              child: const Row(
-                children: [
-                  Icon(Icons.trending_up, color: AppColors.success, size: 14),
-                  SizedBox(width: 4),
-                  Text(
-                    '+12.5%',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.success,
+            GestureDetector(
+              onTap: () {
+                final message = data.dailyGrowth == 0 
+                  ? "You haven't spent anything today! Starting at neutral."
+                  : (data.dailyGrowth > 0 
+                      ? "Spending increased by ₹${(-data.todayDifference).toStringAsFixed(2)} over your daily target."
+                      : "Spending decreased by ₹${data.todayDifference.toStringAsFixed(2)} relative to your daily target.");
+                
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      message,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
+                    backgroundColor: data.dailyGrowth > 0.01 
+                        ? Colors.redAccent.withValues(alpha: 0.9) 
+                        : (data.dailyGrowth < -0.01 ? AppColors.success.withValues(alpha: 0.9) : AppColors.background),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                ],
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppDimensions.rMax),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      data.dailyGrowth > 0.01 
+                          ? Icons.trending_up 
+                          : (data.dailyGrowth < -0.01 ? Icons.trending_down : Icons.remove), 
+                      color: data.dailyGrowth > 0.01 
+                          ? Colors.redAccent 
+                          : (data.dailyGrowth < -0.01 ? AppColors.success : AppColors.textMuted), 
+                      size: 14,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      data.dailyGrowth == 0 
+                          ? 'Neutral' 
+                          : '${data.dailyGrowth > 0 ? "+" : ""}${data.dailyGrowth.toStringAsFixed(1)}%',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: data.dailyGrowth > 0.01 
+                            ? Colors.redAccent 
+                            : (data.dailyGrowth < -0.01 ? AppColors.success : AppColors.textMuted),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
+        const SizedBox(height: AppDimensions.s2),
+        _buildMonthlyTrend(data),
       ],
     );
   }
 
-  Widget _buildExpenseTrendsCard() {
+  Widget _buildMonthlyTrend(AnalyticsData data) {
+    if (data.dailyCumulativeSpending.isEmpty) return const SizedBox();
+    
     return Container(
-      padding: const EdgeInsets.all(AppDimensions.pLarge),
+      height: 80,
+      width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.r3),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        color: AppColors.surface.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(AppDimensions.r2),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Expense Trends',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              Row(
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: AppColors.accent,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  const Text(
-                    'Current Month',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textMuted,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppDimensions.r2),
+        child: CustomPaint(
+          painter: TrendChartPainter(
+            data.dailyCumulativeSpending,
+            DateTime.now().day,
           ),
-          const SizedBox(height: 30),
-          // Custom Line Chart Placeholder
-          SizedBox(
-            height: 100,
-            child: CustomPaint(
-              painter: _LineChartPainter(),
-            ),
-          ),
-          const SizedBox(height: 16),
-          // X-Axis
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildAxisLabel('WEEK 1'),
-              _buildAxisLabel('WEEK 2'),
-              _buildAxisLabel('WEEK 3'),
-              _buildAxisLabel('WEEK 4'),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -285,7 +290,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
               children: [
                 CustomPaint(
                   size: const Size(140, 140),
-                  painter: _DonutChartPainter(),
+                  painter: _DonutChartPainter(data.categoryBreakdown, chartColors),
                 ),
                 const Column(
                   mainAxisSize: MainAxisSize.min,
@@ -311,28 +316,22 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
             ),
           ),
           const SizedBox(height: AppDimensions.s4),
-          // Legend Options
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildLegendItem(color: AppColors.accent, label: 'FOOD', percentage: '${(data.categoryBreakdown['Food'] ?? 0).toStringAsFixed(1)}%'),
-                    const SizedBox(height: AppDimensions.s2),
-                    _buildLegendItem(color: Colors.orangeAccent, label: 'MESS', percentage: '${(data.categoryBreakdown['Mess'] ?? 0).toStringAsFixed(1)}%'),
-                  ],
+          // Dynamic Legend for all categories
+          Wrap(
+            spacing: 16,
+            runSpacing: 12,
+            children: data.categoryBreakdown.entries.toList().asMap().entries.map((entry) {
+              final idx = entry.key;
+              final catEntry = entry.value;
+              return SizedBox(
+                width: (MediaQuery.of(context).size.width - 80) / 2, // 2 items per row approx
+                child: _buildLegendItem(
+                  color: chartColors[idx % chartColors.length],
+                  label: catEntry.key.toUpperCase(),
+                  percentage: '${catEntry.value.toStringAsFixed(1)}%',
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildLegendItem(color: Colors.lightBlueAccent, label: 'RENT', percentage: '${(data.categoryBreakdown['Rent'] ?? 0).toStringAsFixed(1)}%'),
-                    const SizedBox(height: AppDimensions.s2),
-                    _buildLegendItem(color: Colors.white.withValues(alpha: 0.2), label: 'OTHER', percentage: '${(data.categoryBreakdown['Transport'] ?? 0 + (data.categoryBreakdown['Other'] ?? 0)).toStringAsFixed(1)}%'),
-                  ],
-                ),
-              ),
-            ],
+              );
+            }).toList(),
           ),
         ],
       ),
@@ -439,7 +438,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
     );
   }
 
-  Widget _buildLast7DaysCard() {
+  Widget _buildLast7DaysCard(AnalyticsData data) {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.pLarge),
       decoration: BoxDecoration(
@@ -450,25 +449,53 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Last 7 Days',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 100,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: List.generate(7, (index) {
+                final amount = data.last7DaysSpending[index];
+                final maxAmount = data.last7DaysSpending.reduce(math.max);
+                final heightFactor = (maxAmount > 0 ? amount / maxAmount : 0.0);
+                
+                return Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      final dayLabel = index == 6 ? 'Today' : '${6 - index}d ago';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('$dayLabel High: ${data.highestExpenseByDay[index]}\nTotal: ₹${amount.toStringAsFixed(0)}'),
+                          duration: const Duration(seconds: 2),
+                          backgroundColor: index == 6 ? AppColors.accent : AppColors.primary,
+                        ),
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: 20,
+                          height: (80 * heightFactor).clamp(4, 80),
+                          decoration: BoxDecoration(
+                            color: index == 6 ? AppColors.accent : AppColors.primary.withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                    ),
+                  ),
+                );
+              }),
             ),
           ),
-          const SizedBox(height: 100), // Height for bar chart
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildAxisLabel('M'),
-              _buildAxisLabel('T'),
-              _buildAxisLabel('W'),
-              _buildAxisLabel('T'),
-              _buildAxisLabel('F'),
-              _buildAxisLabel('S'),
-              _buildAxisLabel('S'),
+              _buildAxisLabel('6d ago'),
+              _buildAxisLabel('Today'),
             ],
           ),
         ],
@@ -476,7 +503,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
     );
   }
 
-  Widget _buildSpendingFrequencyCard() {
+  Widget _buildSpendingFrequencyCard(AnalyticsData data) {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.pLarge),
       decoration: BoxDecoration(
@@ -505,7 +532,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
-                  'PAST 30 DAYS',
+                  'PAST 28 DAYS',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
@@ -516,7 +543,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
             ],
           ),
           const SizedBox(height: AppDimensions.s3),
-          // Heatmap grid placeholder
+          // Heatmap grid (4 weeks x 7 days = 28 slots)
           Column(
             children: List.generate(4, (rowIndex) {
               return Padding(
@@ -524,14 +551,31 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(7, (colIndex) {
-                    final intensities = [0.1, 0.3, 0.5, 0.8, 0.1, 0.2, 0.4];
-                    final intensity = intensities[(rowIndex * 7 + colIndex) % 7];
-                    return Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: AppColors.accent.withValues(alpha: intensity),
-                        borderRadius: BorderRadius.circular(6),
+                    final index = rowIndex * 7 + colIndex;
+                    final count = data.spendingFrequency[index];
+                    // Alpha: 0.05 (none), 0.2 (1), 0.5 (2), 0.8 (3+)
+                    double alpha = 0.05;
+                    if (count == 1) alpha = 0.3;
+                    if (count == 2) alpha = 0.6;
+                    if (count >= 3) alpha = 1.0;
+
+                    return GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('$count transaction${count == 1 ? "" : "s"} on this day'),
+                            duration: const Duration(seconds: 1),
+                            backgroundColor: AppColors.accent,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: AppColors.accent.withValues(alpha: alpha),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
                       ),
                     );
                   }),
@@ -649,83 +693,136 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
   }
 }
 
-class _LineChartPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..strokeWidth = 3
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    final path = Path();
-    
-    // Gradient for line
-    paint.shader = const LinearGradient(
-      colors: [AppColors.accent, Colors.lightBlueAccent],
-    ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-
-    // Approximate the curve from the design
-    path.moveTo(0, size.height * 0.8);
-    path.cubicTo(
-        size.width * 0.2, size.height * 0.9,
-        size.width * 0.3, size.height * 0.7,
-        size.width * 0.4, size.height * 0.4);
-    path.cubicTo(
-        size.width * 0.5, size.height * 0.1,
-        size.width * 0.6, size.height * 0.9,
-        size.width * 0.8, size.height * 0.6);
-    path.cubicTo(
-        size.width * 0.9, size.height * 0.3,
-        size.width * 0.95, size.height * 0.1,
-        size.width, size.height * 0.5);
-
-    canvas.drawPath(path, paint);
-
-    // Draw little dots on the line
-    final dotPaint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
-    
-    // Fake positions for dots
-    canvas.drawCircle(Offset(size.width * 0.4, size.height * 0.4), 4, dotPaint);
-    canvas.drawCircle(Offset(size.width * 0.8, size.height * 0.6), 4, dotPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
 class _DonutChartPainter extends CustomPainter {
+  final Map<String, double> breakdown;
+  final List<Color> colors;
+  _DonutChartPainter(this.breakdown, this.colors);
+
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
     const strokeWidth = 14.0;
     
     final bgPaint = Paint()
-      ..color = AppColors.background
+      ..color = AppColors.surface
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
     
     canvas.drawArc(rect, 0, math.pi * 2, false, bgPaint);
 
-    void drawSegment(double startAngle, double sweepAngle, Color color) {
+    if (breakdown.isEmpty) return;
+
+    double currentAngle = -math.pi / 2;
+
+    int colorIndex = 0;
+    breakdown.forEach((cat, percentage) {
+      if (percentage <= 0) return;
+      
+      final sweepAngle = (percentage / 100) * math.pi * 2;
       final paint = Paint()
-        ..color = color
+        ..color = colors[colorIndex % colors.length]
         ..strokeWidth = strokeWidth
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;
-      canvas.drawArc(rect, startAngle, sweepAngle, false, paint);
-    }
-
-    // Food 40% (Purple/Accent)
-    drawSegment(-math.pi / 2, math.pi * 0.8, AppColors.accent);
-    // Rent 30% (Blue)
-    drawSegment(math.pi * 0.3 + 0.1, math.pi * 0.6, Colors.lightBlueAccent);
-    // Mess 20% (Orange)
-    drawSegment(math.pi * 0.9 + 0.2, math.pi * 0.4, Colors.orangeAccent);
-    // Other 10% (Grey) is represented by background basically, or a small gap.
+      
+      canvas.drawArc(rect, currentAngle, sweepAngle, false, paint);
+      currentAngle += sweepAngle;
+      colorIndex++;
+    });
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+class TrendChartPainter extends CustomPainter {
+  final List<double> cumulativeData;
+  final int currentDay; // 1-based
+
+  TrendChartPainter(this.cumulativeData, this.currentDay);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (cumulativeData.isEmpty) return;
+
+    final maxVal = cumulativeData.reduce(math.max);
+    final referenceMax = maxVal > 0 ? maxVal * 1.2 : 1000.0;
+    
+    final paint = Paint()
+      ..color = AppColors.primary
+      ..strokeWidth = 3
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
+
+    final fillPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          AppColors.primary.withValues(alpha: 0.3),
+          AppColors.primary.withValues(alpha: 0.0),
+        ],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+
+    final path = Path();
+    final fillPath = Path();
+
+    final double stepX = size.width / (cumulativeData.length - 1);
+    
+    for (int i = 0; i < cumulativeData.length; i++) {
+      // We only draw up to the current day for a real "progress" feel
+      // or we can draw the whole month but only the data points we have
+      double y = size.height - (cumulativeData[i] / referenceMax * size.height);
+      double x = i * stepX;
+
+      if (i == 0) {
+        path.moveTo(x, y);
+        fillPath.moveTo(x, size.height);
+        fillPath.lineTo(x, y);
+      } else {
+        // Curve approximation
+        double prevX = (i - 1) * stepX;
+        double prevY = size.height - (cumulativeData[i-1] / referenceMax * size.height);
+        
+        path.quadraticBezierTo(
+          prevX + (x - prevX) / 2, 
+          prevY, 
+          x, 
+          y
+        );
+        
+        fillPath.quadraticBezierTo(
+          prevX + (x - prevX) / 2, 
+          prevY, 
+          x, 
+          y
+        );
+      }
+      
+      // Stop drawing the visible line if we exceed current day
+      if (i + 1 >= currentDay) break;
+    }
+
+    // Close fill path
+    double lastX = (currentDay - 1) * stepX;
+    fillPath.lineTo(lastX, size.height);
+    fillPath.close();
+
+    canvas.drawPath(fillPath, fillPaint);
+    canvas.drawPath(path, paint);
+    
+    // Draw "today" dot
+    final dotPaint = Paint()..color = Colors.white;
+    final dotOuterPaint = Paint()..color = AppColors.primary;
+    
+    double todayY = size.height - (cumulativeData[currentDay - 1] / referenceMax * size.height);
+    double todayX = (currentDay - 1) * stepX;
+    
+    canvas.drawCircle(Offset(todayX, todayY), 6, dotOuterPaint);
+    canvas.drawCircle(Offset(todayX, todayY), 3, dotPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

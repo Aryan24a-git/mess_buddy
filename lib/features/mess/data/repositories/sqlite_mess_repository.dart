@@ -33,6 +33,18 @@ class SqliteMessRepository implements MessRepository {
   }
 
   @override
+  Future<List<MessSession>> getSessionsBetweenDates(DateTime start, DateTime end) async {
+    final db = await _dbHelper.database;
+    final allRows = await db.query(DatabaseHelper.tableMessSessions);
+    return allRows.map((row) => MessSession.fromMap(row)).where((s) {
+      final sDate = DateTime(s.sessionDate.year, s.sessionDate.month, s.sessionDate.day);
+      final startDate = DateTime(start.year, start.month, start.day);
+      final endDate = DateTime(end.year, end.month, end.day);
+      return !sDate.isBefore(startDate) && !sDate.isAfter(endDate);
+    }).toList();
+  }
+
+  @override
   Future<int> updateSession(MessSession session) async {
     return await _dbHelper.update(DatabaseHelper.tableMessSessions, session.toMap());
   }

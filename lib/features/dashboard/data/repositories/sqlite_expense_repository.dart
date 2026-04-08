@@ -26,6 +26,9 @@ class SqliteExpenseRepository implements ExpenseRepository {
 
   @override
   Future<int> updateExpense(Expense expense) async {
-    return await _dbHelper.update(DatabaseHelper.tableExpenses, expense.toMap());
+    return await _dbHelper.update(
+      DatabaseHelper.tableExpenses,
+      expense.toMap(),
+    );
   }
 }

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 class MessSession {
   final int? id;
   final DateTime sessionDate;
   final String sessionType;
   final String status;
   final double sessionCost;
+  final List<String> addons;
 
   MessSession({
     this.id,
@@ -11,6 +14,7 @@ class MessSession {
     required this.sessionType,
     required this.status,
     required this.sessionCost,
+    this.addons = const [],
   });
 
   MessSession copyWith({
@@ -19,6 +23,7 @@ class MessSession {
     String? sessionType,
     String? status,
     double? sessionCost,
+    List<String>? addons,
   }) {
     return MessSession(
       id: id ?? this.id,
@@ -26,6 +31,7 @@ class MessSession {
       sessionType: sessionType ?? this.sessionType,
       status: status ?? this.status,
       sessionCost: sessionCost ?? this.sessionCost,
+      addons: addons ?? this.addons,
     );
   }
 
@@ -36,16 +42,27 @@ class MessSession {
       'session_type': sessionType,
       'status': status,
       'session_cost': sessionCost,
+      'addons': jsonEncode(addons),
     };
   }
 
   factory MessSession.fromMap(Map<String, dynamic> map) {
+    List<String> parsedAddons = [];
+    if (map['addons'] != null) {
+      try {
+        parsedAddons = List<String>.from(jsonDecode(map['addons']));
+      } catch (e) {
+        // ignore
+      }
+    }
+
     return MessSession(
       id: map['id'],
       sessionDate: DateTime.parse(map['session_date']),
       sessionType: map['session_type'] ?? '',
       status: map['status'] ?? '',
       sessionCost: map['session_cost']?.toDouble() ?? 0.0,
+      addons: parsedAddons,
     );
   }
 }

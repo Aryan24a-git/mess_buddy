@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users Collection
+    match /users/{uid} {
+      // Users can only read their own document
+      allow read: if request.auth != null && request.auth.uid == uid;
+      
+      // Allow document creation if auth matches
+      allow create: if request.auth != null && request.auth.uid == uid;
+      
+      // Allow document updates if auth matches, but PREVENT modifying sensitive monetization fields
+      allow update: if request.auth != null && request.auth.uid == uid
+                    && (!request.resource.data.diff(resource.data).affectedKeys().hasAny([
+                      'credits', 
+                      'isPremium', 
+                      'premiumExpiresAt', 
+                      'referredBy'
+                    ]));
+                    
+      // Only allow legitimate deletions
+      allow delete: if request.auth != null && request.auth.uid == uid;
+
+      // --- Subcollections ---
+      
+      // adWatches Subcollection
+      match /adWatches/{adId} {
+        // Users can read their own ad watch history if we want to show it in UI
+        allow read: if request.auth != null && request.auth.uid == uid;
+        // MUST NEVER be written by client. Cloud Functions (Admin SDK) bypasses these rules.
+        allow write: if false; 
+      }
+
+      // referrals Subcollection
+      match /referrals/{referralId} {
+        // Users can read their own referral statuses
+        allow read: if request.auth != null && request.auth.uid == uid;
+        // Referral tracking is highly sensitive and handled entirely by Cloud Functions
+        allow write: if false; 
+      }
+    }
+    
+    // Feedback Collection
+    match /feedback/{feedbackId} {
+      allow create: if request.auth != null;
+      allow read: if request.auth != null && (request.auth.token.admin == true || resource.data.userId == request.auth.uid);
+      allow update, delete: if false; 
+    }
+  }
+}
